@@ -1,0 +1,3 @@
+[global.databases]
+integer = { url = "postgresql://inti@localhost/integer" }
+
