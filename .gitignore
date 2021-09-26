@@ -15,6 +15,5 @@ Cargo.lock
 *.pdb
 
 ### Database ###
-db
-!db/initdb.d
+db/password.txt
 
