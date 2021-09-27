@@ -12,5 +12,6 @@ mod schema;
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![routes::index])
+        .mount("/members", routes![routes::members::find])
         .attach(db::Conn::fairing())
 }
