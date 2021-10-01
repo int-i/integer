@@ -1,3 +1,4 @@
-[global.databases]
-integer = { url = "postgresql://inti@localhost/integer" }
+[default]
+address = "0.0.0.0"
+port = 3000
 
