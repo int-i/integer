@@ -22,15 +22,12 @@ fn rocket() -> _ {
         .unwrap()
         .trim()
         .to_string();
+    let db_uri = format!(
+        "postgresql://{}:{}@localhost/{}",
+        db_user, db_password, db_name
+    );
 
-    let figment = Config::figment().merge((
-        "databases",
-        map! {
-            "integer" => map! {
-                "url" => format!("postgresql://{}:{}@localhost/{}",   db_user, db_password, db_name )
-            }
-        },
-    ));
+    let figment = Config::figment().merge(("databases", map!["integer" => map!["url" => db_uri]]));
 
     rocket::custom(figment)
         .mount("/", routes![routes::index])
