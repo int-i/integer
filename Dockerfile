@@ -1,8 +1,14 @@
-FROM rust:alpine AS build
+# syntax=docker/dockerfile:1
+FROM rust:alpine AS builder
 
 WORKDIR /usr/src/integer
 
-RUN apk add --no-cache build-base openssl-dev postgresql-dev
+RUN apk add --no-cache g++ postgresql-dev
+
+RUN cargo init .
+COPY Cargo* ./
+RUN cargo build --release \
+    && rm target/release/deps/integer*
 
 COPY . .
 
@@ -15,7 +21,8 @@ WORKDIR /usr/local/bin/integer
 RUN apk add --no-cache tzdata
 ENV TZ Asia/Seoul
 
-COPY --from=build /usr/src/integer/target/release/integer .
+COPY --from=builder /usr/src/integer/target/release/integer .
 
+EXPOSE 3000
 CMD ["./integer"]
 
