@@ -12,6 +12,8 @@ services:
       DB_PASSWORD_FILE: /run/secrets/db_password
     networks:
       - backend
+    ports:
+      - "3000:3000"
     restart: unless-stopped
     secrets:
       - db_password

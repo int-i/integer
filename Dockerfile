@@ -1,28 +1,42 @@
 # syntax=docker/dockerfile:1
-FROM rust:alpine AS builder
+FROM rust:1.55.0-slim AS chef 
 
 WORKDIR /usr/src/integer
 
-RUN apk add --no-cache g++ postgresql-dev
+RUN set -eux; \
+    cargo install cargo-chef; \
+    rm -rf $CARGO_HOME/registry
 
-RUN cargo init .
-COPY Cargo* ./
-RUN cargo build --release \
-    && rm target/release/deps/integer*
+FROM chef as planner
 
 COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
 
+FROM chef AS builder
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends libpq-dev; \
+    rm -rf /var/lib/apt/lists/*; 
+
+COPY --from=planner /usr/src/integer/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+
+COPY . .
 RUN cargo build --release
 
-FROM alpine:3.14
+FROM debian:bullseye-slim
 
-WORKDIR /usr/local/bin/integer
+WORKDIR /usr/local/bin
 
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Seoul
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends libpq-dev; \
+    rm -rf /var/lib/apt/lists/*; 
 
 COPY --from=builder /usr/src/integer/target/release/integer .
 
+ENV TZ Asia/Seoul
 EXPOSE 3000
 CMD ["./integer"]
 
