@@ -7,9 +7,12 @@ services:
     depends_on:
       - db
     environment:
+      DB_HOST: db
       DB_NAME: integer
       DB_USER: inti
       DB_PASSWORD_FILE: /run/secrets/db_password
+      ROCKET_ADDRESS: 0.0.0.0
+      ROCKET_PORT: 3000
     networks:
       - backend
     ports:

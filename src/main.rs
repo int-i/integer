@@ -15,6 +15,7 @@ mod schema;
 
 #[launch]
 fn rocket() -> _ {
+    let db_host = env::var("DB_HOST").unwrap_or("localhost".to_string());
     let db_name = env::var("DB_NAME").unwrap();
     let db_user = env::var("DB_USER").unwrap();
     let db_password_file = env::var("DB_PASSWORD_FILE").unwrap();
@@ -23,9 +24,10 @@ fn rocket() -> _ {
         .trim()
         .to_string();
     let db_uri = format!(
-        "postgresql://{}:{}@localhost/{}",
-        db_user, db_password, db_name
+        "postgresql://{}:{}@{}/{}",
+        db_user, db_password, db_host, db_name
     );
+    println!("DB URI - {}", db_uri);
 
     let figment = Config::figment().merge(("databases", map!["integer" => map!["url" => db_uri]]));
 
