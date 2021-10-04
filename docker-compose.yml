@@ -1,27 +1,26 @@
 version: "3.9"
 
 services:
-  api:
+  integer_api:
     image: integer_api
     build: .
+    deploy:
+      replicas: 1
     depends_on:
-      - db
+      - postgres
     environment:
-      DB_HOST: db
+      DB_HOST: postgres
       DB_NAME: integer
       DB_USER: inti
-      DB_PASSWORD_FILE: /run/secrets/db_password
+      DB_PASSWORD_FILE: /run/secrets/postgres_password
       ROCKET_ADDRESS: 0.0.0.0
-      ROCKET_PORT: 3000
     networks:
       - backend
-    ports:
-      - "3000:3000"
     restart: unless-stopped
     secrets:
-      - db_password
+      - postgres_password
 
-  db:
+  postgres:
     image: postgres:13-alpine
     deploy:
       placement:
@@ -32,7 +31,7 @@ services:
       TZ: Asia/Seoul
       POSTGRES_DB: integer
       POSTGRES_USER: inti
-      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "integer", "-U", "inti"]
     networks:
@@ -41,18 +40,43 @@ services:
       - "5432:5432"
     restart: unless-stopped
     secrets:
-      - db_password
+      - postgres_password
     volumes:
       - ./db/initdb.d:/docker-entrypoint-initdb.d:ro
-      - db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+
+  haproxy:
+    image: haproxy:2.4-alpine
+    depends_on:
+      - integer_api
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+        max_replicas_per_node: 1
+    environment:
+      TZ: Asia/Seoul
+    networks:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8404:8404"
+    restart: unless-stopped
+    secrets:
+      - certificate
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
 
 networks:
   backend:
 
 secrets:
-  db_password:
+  certificate:
+    file: ./combined.pem
+  postgres_password:
     file: ./db/password.txt
 
 volumes:
-  db_data:
+  postgres_data:
 
