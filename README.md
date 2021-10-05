@@ -9,6 +9,32 @@
 
 ## Guide
 
+Clone the repository:
+
+```bash
+$ git clone https://github.com/int-i/cpp-sort.git
+```
+
+### Development
+
+1. Build the source code:
+
+    ```bash
+    $ cargo build
+    ```
+
+2. Run PostgreSQL:
+
+    ```bash
+    $ docker-compose -f docker-compose.db.yml up -d
+    ```
+
+2. Run the application:
+
+    ```bash
+    $ DB_USER=inti DB_PASSWORD_FILE=db/password.txt cargo run
+    ```
+
 ### Production
 
 1. Build Docker image:
@@ -17,13 +43,13 @@
     $ docker build -t integer_api .
     ```
 
-2. Create Docker secret for `site.pem`:
+2. Create a Docker secret for `site.pem`:
 
     ```bash
     $ cat cert.pem key.pem | docker secret create site.pem -
     ```
 
-3. Deploy to Docker Swarm
+3. Deploy the application to Docker Swarm
 
     ```bash
     $ docker swarm init
