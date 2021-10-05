@@ -16,7 +16,7 @@ mod schema;
 #[launch]
 fn rocket() -> _ {
     let db_host = env::var("DB_HOST").unwrap_or("localhost".to_string());
-    let db_name = env::var("DB_NAME").unwrap();
+    let db_name = env::var("DB_NAME").unwrap_or("integer".to_string());
     let db_user = env::var("DB_USER").unwrap();
     let db_password_file = env::var("DB_PASSWORD_FILE").unwrap();
     let db_password = fs::read_to_string(db_password_file)
