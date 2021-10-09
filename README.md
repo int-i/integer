@@ -71,3 +71,57 @@
     $ docker swarm init
     $ docker stack deploy -c docker-compose.yml inti
     ```
+
+## Usage
+
+### API Reference
+
+#### GET /members/{id}
+
+회원 정보 조회
+
+##### Output
+
+```json
+{
+    "id": 12191765,
+    "name": "박승재",
+    "admission_year": 19
+}
+```
+
+#### GET /members/{id}/contacts
+
+회원 연락처 정보 조회
+
+##### Output
+
+```json
+{
+    "id": 12191234,
+    "name": "박승재",
+    "admission_year": 19,
+    "phone": "010-1234-5678",
+    "email": "email@example.com"
+}
+```
+
+## License
+
+```text
+Copyright 2021 Seungjae Park
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+Integer is licensed under the [Apache License 2.0](./LICENSE).
