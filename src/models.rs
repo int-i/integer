@@ -1,4 +1,4 @@
-use rocket::serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable)]
 pub struct Member {
@@ -10,7 +10,6 @@ pub struct Member {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(crate = "rocket::serde")]
 pub struct MemberPublic {
     pub id: i32,
     pub name: String,
@@ -28,7 +27,6 @@ impl MemberPublic {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(crate = "rocket::serde")]
 pub struct MemberContact {
     pub id: i32,
     pub name: String,
