@@ -8,35 +8,50 @@
 [![GitHub Workflow](https://img.shields.io/github/workflow/status/int-i/integer/Rust?logo=github&logoColor=white&style=for-the-badge)](https://github.com/int-i/integer/actions)
 [![License](https://img.shields.io/github/license/int-i/integer?style=for-the-badge)](./LICENSE) 
 
-## Guide
+## Build
 
-Clone the repository:
+### Requirement
 
-```bash
-$ git clone https://github.com/int-i/integer.git
-```
+- [Rust](https://www.rust-lang.org/)
+- [libpq](https://www.postgresql.org/docs/13/libpq.html)
+    - `libpq-dev` (Debian)
+    - `postgresql-dev` (Alpine Linux)
 
-### Development
+### Guide
 
-1. Build the source:
+1. Clone the repository:
+
+    ```bash
+    $ git clone https://github.com/int-i/integer.git
+    ```
+
+2. Build the source:
 
     ```bash
     $ cargo build
     ```
 
-2. Run PostgreSQL:
+3. Run PostgreSQL:
 
     ```bash
     $ docker-compose -f docker-compose.db.yml up -d
     ```
 
-2. Run the application:
+4. Run the application:
 
     ```bash
-    $ DB_USER=inti DB_PASSWORD_FILE=db/password.txt cargo run
+    $ DB_USER=inti DB_PASSWORD=password cargo run
     ```
 
-### Production
+## Deploy
+
+### Requirement
+
+- [Docker](https://www.docker.com/)
+- `cert.pem` - a certificate
+- `key.pem` - a private key
+
+### Guide
 
 1. Build a Docker image:
 
