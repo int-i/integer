@@ -17,7 +17,6 @@ fn rocket() -> _ {
     let figment =
         Config::figment().merge(("databases", map!["integer" => map!["url" => db_config.uri]]));
     rocket::custom(figment)
-        .mount("/", routes![routes::index])
         .mount(
             "/members",
             routes![routes::members::find, routes::members::find_contact,],
