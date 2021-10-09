@@ -72,7 +72,7 @@ networks:
 
 secrets:
   postgres_password:
-    file: ./db/password.txt
+    external: true  
   site.pem:
     external: true  
 

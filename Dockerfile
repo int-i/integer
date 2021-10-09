@@ -37,6 +37,6 @@ RUN set -eux; \
 COPY --from=builder /usr/src/integer/target/release/integer .
 
 ENV TZ Asia/Seoul
-EXPOSE 3000
+EXPOSE 8000
 CMD ["./integer"]
 
