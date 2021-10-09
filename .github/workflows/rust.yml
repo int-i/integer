@@ -7,6 +7,7 @@ on:
       - '.github/workflows/rust.yml'
       - 'src/**'
       - 'Cargo.toml'
+      - 'Cargo.lock'
   pull_request:
     branches: [ main ]
 
@@ -30,7 +31,7 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Build sources
-      run: cargo build --release --verbose
+      run: cargo build
 
   lint:
     runs-on: ubuntu-latest
