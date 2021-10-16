@@ -20,8 +20,8 @@ impl Config {
 
 impl Default for Config {
     fn default() -> Self {
-        let host = env::var("DB_HOST").unwrap_or_else(|_| Config::HOST.to_string());
-        let dbname = env::var("DB_NAME").unwrap_or_else(|_| Config::DBNAME.to_string());
+        let host = env::var("DB_HOST").unwrap_or_else(|_| Self::HOST.to_string());
+        let dbname = env::var("DB_NAME").unwrap_or_else(|_| Self::DBNAME.to_string());
         let user = env::var("DB_USER").unwrap();
         let password = env::var("DB_PASSWORD").unwrap_or_else(|_| {
             let password_file = env::var("DB_PASSWORD_FILE").unwrap();
