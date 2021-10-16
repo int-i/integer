@@ -14,6 +14,9 @@ target/
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
 
+### Certificates ###
+*.pem
+
 ### Database ###
 db/initdb.d/members.csv
 db/password.txt
