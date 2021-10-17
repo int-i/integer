@@ -15,8 +15,8 @@
 
 - [Rust](https://www.rust-lang.org/)
 - [libpq](https://www.postgresql.org/docs/13/libpq.html)
-    - `libpq-dev` (Debian)
-    - `postgresql-dev` (Alpine Linux)
+    - [`libpq-dev`](https://packages.debian.org/bullseye/libpq-dev) (Debian)
+    - [`postgresql-dev`](https://pkgs.alpinelinux.org/packages?name=postgresql-dev) (Alpine Linux)
 
 ### Guide
 
@@ -44,33 +44,43 @@
     $ DB_USER=inti DB_PASSWORD=password cargo run
     ```
 
+    See [Environment Variables](#environment-variables)
+
 ## Deploy
 
 ### Requirement
 
 - [Docker](https://www.docker.com/)
-- `db/password.txt` - a DB password file
-- `cert.pem` - a certificate
-- `key.pem` - a private key
+- `db/password.txt` - the DB password file
+- `cert.pem` - the server certificate
+- `privkey.pem` - the private key for the certificate
+- `chain.pem` - (Option) the intermediate certificate
 
 ### Guide
 
-1. Build a Docker image:
+1. Build the Docker image:
 
     ```bash
     $ docker build -t integer_api .
     ```
 
-2. Create a Docker secret for `postgres_password`:
+    Or, you can use Alpine-based image:
+
+    ```bash
+    $ docker build -f Dockerfile.alpine -t integer_api:alpine .
+    ```
+
+    > Note: If you use Alpine-based image on `aarch64-unknown-linux-musl`, install [libc6-compat](https://pkgs.alpinelinux.org/packages?name=libc6-compat) on final stage of [Dockerfile](./Dockerfile.alpine).
+    >
+    > ```dockerfile
+    > RUN apk add --no-cache libc6-compat
+    > ```
+
+2. Create the Docker secrets:
 
     ```bash
     $ docker secret create postgres_password db/password.txt
-    ```
-
-3. Create a Docker secret for `site.pem`:
-
-    ```bash
-    $ cat cert.pem key.pem | docker secret create site.pem -
+    $ cat cert.pem chain.pem privkey.pem | docker secret create site.pem -
     ```
 
 4. Deploy the application to Docker Swarm:
