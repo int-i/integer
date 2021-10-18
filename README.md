@@ -64,7 +64,7 @@
     $ docker build -t integer_api .
     ```
 
-    Or, you can use Alpine-based image:
+    or, use Alpine-based image:
 
     ```bash
     $ docker build -f Dockerfile.alpine -t integer_api:alpine .
@@ -76,14 +76,17 @@
     > RUN apk add --no-cache libc6-compat
     > ```
 
-2. Create the Docker secrets:
+2. Create the [Docker secrets](https://docs.docker.com/engine/swarm/secrets/):
 
     ```bash
     $ docker secret create postgres_password db/password.txt
     $ cat cert.pem chain.pem privkey.pem | docker secret create site.pem -
     ```
 
-4. Deploy the application to Docker Swarm:
+    - `postgres_password`
+    - `site.pem`
+
+4. Deploy the application to [Docker Swarm](https://docs.docker.com/engine/swarm/):
 
     ```bash
     $ docker swarm init
