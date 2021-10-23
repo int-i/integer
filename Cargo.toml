@@ -1,8 +1,9 @@
 [package]
 name = "integer"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Seungjae Park <astro.psj@gmail.com>"]
 edition = "2018"
+rust-version = "1.51"
 description = "Member Management Service"
 repository = "https://github.com/int-i/integer"
 license = "Apache-2.0"
