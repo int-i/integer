@@ -35,7 +35,6 @@ services:
       DB_HOST: postgres
       DB_USER: inti
       DB_PASSWORD_FILE: /run/secrets/postgres_password
-      ROCKET_ADDRESS: 0.0.0.0
     networks:
       - backend
     restart: unless-stopped
